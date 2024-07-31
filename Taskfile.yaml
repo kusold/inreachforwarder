@@ -1,0 +1,51 @@
+version: '3'
+
+tasks:
+  build:
+    desc: "Build the Go project"
+    cmds:
+      - "go build -o bin/inreachforwarder ./cmd/inreachforwarder"
+    sources:
+      - "**/*.go"
+    generates:
+      - "bin/inreachforwarder"
+
+  test:
+    desc: "Run tests"
+    cmds:
+      - "go test ./..."
+
+  lint:
+    desc: "Run linter"
+    cmds:
+      - "golangci-lint run"
+
+  run:
+    desc: "Run the application"
+    cmds:
+      - "go run ./cmd/inreachforwarder"
+
+  clean:
+    desc: "Clean the build artifacts"
+    cmds:
+      - "rm -rf bin"
+
+  install:
+    desc: "Install dependencies"
+    cmds:
+      - "go mod tidy"
+
+  format:
+    desc: "Format the code"
+    cmds:
+      - "gofmt -s -w ."
+
+  vet:
+    desc: "Run go vet"
+    cmds:
+      - "go vet ./..."
+
+  generate:
+    desc: "Run go generate"
+    cmds:
+      - "go generate ./..."
