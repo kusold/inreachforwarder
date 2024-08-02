@@ -1,6 +1,8 @@
 package inreachforwarder
 
 import (
+	"log"
+
 	"github.com/kusold/inreachforwarder/internal/inreachparser"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,6 +25,7 @@ var url string
 func init() {
 	rootCmd.AddCommand(messageCmd)
 	messageCmd.AddCommand(messageSendCmd)
+	messageCmd.AddCommand(messageReadCmd)
 	messageCmd.PersistentFlags().String("url", "", "The Garmin InReach URL that was emailed to you")
 	// messageCmd.PersistentFlags().StringVar(&url, "url", "", "The Garmin InReach URL that was emailed to you")
 	// messageCmd.MarkPersistentFlagRequired("url")
@@ -40,5 +43,21 @@ var messageSendCmd = &cobra.Command{
 		// log.Printf("Sending message to %s\n", url)
 
 		inreachparser.SendMessageToInReach(url, "Hello, World!")
+	},
+}
+
+var messageReadCmd = &cobra.Command{
+	Use:   "read",
+	Short: "Read a message",
+	Long:  `Read a message sent by your InReach device`,
+	Run: func(cmd *cobra.Command, args []string) {
+		url := viper.GetString("url")
+		// log.Printf("Sending message to %s\n", url)
+
+		msg, err := inreachparser.ReadMessageFromInReach(url)
+		if err != nil {
+			panic(err)
+		}
+		log.Print(msg)
 	},
 }

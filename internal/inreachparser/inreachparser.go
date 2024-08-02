@@ -35,6 +35,25 @@ func SendMessageToInReach(replyUrl, text string) error {
 	return sendPayloadToInReach(parsedUrl.Host, payload)
 }
 
+func ReadMessageFromInReach(replyUrl string) (string, error) {
+	return scrapeMapShareForMessage(replyUrl)
+}
+
+func scrapeMapShareForMessage(replyUrl string) (string, error) {
+	doc, err := scrapeMapShare(replyUrl)
+	if err != nil {
+		return "", err
+	}
+
+	var message string
+	// Get a div with class "message-text"
+	doc.Find("div.message-text").Each(func(i int, s *goquery.Selection) {
+		// fmt.Println(s.Text())
+		message = s.Text()
+	})
+	return message, nil
+}
+
 func sendPayloadToInReach(host string, payload *MapSharePayload) error {
 	jsonPayload, err := json.Marshal(payload)
 	if err != nil {
@@ -63,17 +82,7 @@ func sendPayloadToInReach(host string, payload *MapSharePayload) error {
 }
 
 func scrapeMapShareForPayload(url string) (*MapSharePayload, error) {
-	res, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-
-	if res.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
-	}
-
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+	doc, err := scrapeMapShare(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -99,4 +108,23 @@ func scrapeMapShareForPayload(url string) (*MapSharePayload, error) {
 		Guid:      guid,
 	}
 	return payload, nil
+}
+
+func scrapeMapShare(url string) (*goquery.Document, error) {
+	res, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return doc, nil
 }
