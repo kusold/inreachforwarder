@@ -1,8 +1,9 @@
-package main
+package inreachforwarder
 
 import (
 	"fmt"
 
+	"github.com/kusold/inreachforwarder/internal/inreachparser"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -19,10 +20,12 @@ var startCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(startCmd)
-	startCmd.Flags().String("flagname", "default", "Description of the flag")
-	viper.BindPFlag("flagname", startCmd.Flags().Lookup("flagname"))
+	startCmd.Flags().String("url", "", "The Garmin InReach URL that was emailed to you")
+	viper.BindPFlag("url", startCmd.Flags().Lookup("url"))
 }
 
-func start(flagValue string) {
-	fmt.Printf("Start command executed with flag: %s\n", flagValue)
+func start(url string) {
+	fmt.Printf("Start command executed with flag: %s\n", url)
+
+	inreachparser.SendMessageToInReach(url, "Hello, World!")
 }
