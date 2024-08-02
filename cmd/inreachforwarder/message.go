@@ -20,8 +20,6 @@ var messageCmd = &cobra.Command{
 	},
 }
 
-var url string
-
 func init() {
 	rootCmd.AddCommand(messageCmd)
 	messageCmd.AddCommand(messageSendCmd)
