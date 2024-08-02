@@ -3,16 +3,18 @@ module github.com/kusold/inreachforwarder
 go 1.22.5
 
 require (
+	github.com/PagerDuty/go-pagerduty v1.8.0
 	github.com/PuerkitoBio/goquery v1.9.2
+	github.com/emersion/go-imap/v2 v2.0.0-beta.3
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
 )
 
 require (
-	github.com/PagerDuty/go-pagerduty v1.8.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
-	github.com/emersion/go-imap/v2 v2.0.0-beta.3 // indirect
+	github.com/emersion/go-message v0.18.1 // indirect
+	github.com/emersion/go-sasl v0.0.0-20231106173351-e73c9f7bad43 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

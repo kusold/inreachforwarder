@@ -48,7 +48,7 @@ func scrapeMapShareForMessage(replyUrl string) (string, error) {
 	var message string
 	// Get a div with class "message-text"
 	doc.Find("div.message-text").Each(func(i int, s *goquery.Selection) {
-		// fmt.Println(s.Text())
+		fmt.Println(s.Text())
 		message = s.Text()
 	})
 	return message, nil
